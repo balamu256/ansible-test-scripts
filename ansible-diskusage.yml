@@ -1,0 +1,15 @@
+- name: Check Filesystem
+  hosts: all
+  tasks:
+    - name: Get root filesystem usage
+      shell: df -P | awk 'NR--2 {print $5}' | tr -d '%'
+      register: root_usage
+
+    - name: Display file system usage
+      debug:
+        msg: "{{inventory_hostname }} root filesystem is {{ root_usage.stdout }}%"
+
+    - name: Check if root filesystem usage is above threshold
+      fail:
+        msg: "WARNING: Root filesystem usage is above threshold ({{ root_usage.stdout }}%)"
+        when: root_usage.stdout|int > 70
