@@ -12,4 +12,4 @@
     - name: Check if root filesystem usage is above threshold
       fail:
         msg: "WARNING: Root filesystem usage is above threshold ({{ root_usage.stdout }}%)"
-        when: root_usage.stdout|int > 70
+      when: root_usage.stdout|int > 70
